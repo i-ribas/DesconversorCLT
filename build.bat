@@ -9,7 +9,7 @@ if not exist "clt_egogift.ico" goto faltando
 if not exist "Font" goto faltando
 
 python -m pip install pyinstaller
-python -m PyInstaller --noconsole --onefile --name Desconversor --collect-all customtkinter --icon clt_egogift.ico --add-data "logo.png;." --add-data "clt_egogift.ico;." --add-data "Font;Font" main.py
+python -m PyInstaller --noconsole --onefile --name DesconversorCLT --collect-all customtkinter --icon clt_egogift.ico --add-data "logo.png;." --add-data "clt_egogift.ico;." --add-data "Font;Font" main.py
 if errorlevel 1 goto erro
 
 REM Limpa o lixo do build (so o .exe em dist fica)
