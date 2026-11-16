@@ -126,7 +126,7 @@ class VersionDialog(ctk.CTkToplevel):
             pady=(0, 12)
         )
 
-        self.entry = make_entry(self, 280, 40, "ex.: 1.2.0")
+        self.entry = make_entry(self, 280, 40, "ex.: 6.51.0")
         self.entry.pack()
         self.entry.bind("<Return>", lambda e: self.confirm())
 
