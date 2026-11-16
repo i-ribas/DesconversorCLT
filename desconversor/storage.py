@@ -1,21 +1,44 @@
-"""Token salvo e log da última execução (ficam em %APPDATA%)."""
+"""Configurações salvas (token e pasta do jogo) e log da última execução.
+Tudo fica em %APPDATA%\\DesconversorTraducao."""
 
 import json
 import time
+from pathlib import Path
 
 from .config import CONFIG_DIR, CONFIG_FILE, LOG_FILE
 
 
-def load_token() -> str | None:
+def _read() -> dict:
     try:
-        return json.loads(CONFIG_FILE.read_text(encoding="utf-8")).get("token")
+        data = json.loads(CONFIG_FILE.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
     except (OSError, ValueError):
-        return None
+        return {}
+
+
+def _update(**values) -> None:
+    """Grava os valores sem apagar os que já estavam salvos."""
+    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
+    data = _read()
+    data.update(values)
+    CONFIG_FILE.write_text(json.dumps(data), encoding="utf-8")
+
+
+def load_token() -> str | None:
+    return _read().get("token")
 
 
 def save_token(token: str) -> None:
-    CONFIG_DIR.mkdir(parents=True, exist_ok=True)
-    CONFIG_FILE.write_text(json.dumps({"token": token}), encoding="utf-8")
+    _update(token=token)
+
+
+def load_game_dir() -> Path | None:
+    value = _read().get("game_dir")
+    return Path(value) if value else None
+
+
+def save_game_dir(game_dir: Path) -> None:
+    _update(game_dir=str(game_dir))
 
 
 def write_log(warnings: list[str]) -> None:

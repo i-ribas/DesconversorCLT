@@ -35,11 +35,25 @@ SUCCESS_COLOR = "#5CE0A0"
 # ----------------------------------------------------------------------
 # LIMBUS COMPANY
 # ----------------------------------------------------------------------
-GAME_DIR = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Limbus Company")
-DATA_DIR = GAME_DIR / "LimbusCompany_Data"
-EN_DIR = DATA_DIR / "Assets" / "Resources_moved" / "Localize" / "en"
-LANG_DIR = DATA_DIR / "Lang"
+# Local padrão da Steam. Se o jogo não estiver aí, o programa pergunta ao usuário.
+DEFAULT_GAME_DIR = Path(r"C:\Program Files (x86)\Steam\steamapps\common\Limbus Company")
+GAME_FOLDER_NAME = "Limbus Company"  # nome da pasta do jogo
 LANG_NAME = "pt-BR"
+
+
+def data_dir_for(game_dir: Path) -> Path:
+    return game_dir / "LimbusCompany_Data"
+
+
+def en_dir_for(game_dir: Path) -> Path:
+    """Onde ficam os arquivos em inglês do jogo."""
+    return data_dir_for(game_dir) / "Assets" / "Resources_moved" / "Localize" / "en"
+
+
+def lang_dir_for(game_dir: Path) -> Path:
+    """Onde a pasta pt-BR é instalada."""
+    return data_dir_for(game_dir) / "Lang"
+
 
 # ----------------------------------------------------------------------
 # ARQUIVOS DO USUÁRIO (token e log)
