@@ -223,10 +223,10 @@ class GameDirDialog(ctk.CTkToplevel):
             "Escolher pasta",
             self.choose,
             width=220,
-            height=44,
+            height=64,
             size=14,
             radius=12,
-        ).pack()
+        ).pack(pady=(30, 0))
 
         self.msg = make_label(
             self, "", color=ERROR_COLOR, wraplength=360, justify="center"
