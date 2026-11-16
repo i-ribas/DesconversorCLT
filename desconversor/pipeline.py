@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable, Sequence
 
-from .config import EN_DIR, LANG_DIR, LANG_NAME
+from .config import DEFAULT_GAME_DIR, LANG_NAME, en_dir_for, lang_dir_for
 from .converter import convert_translation, find_localize_root
 from .errors import AppError
 from .installer import copy_fonts, find_font_dir, install_translation, zip_folder
@@ -24,8 +24,9 @@ class Context:
     token: str
     status: Callable[[str], None]  # atualiza o texto de status na tela
     zip_dest: str | None = None  # onde salvar o zip (só em 'Preparar')
-    en_dir: Path = EN_DIR
-    lang_dir: Path = LANG_DIR
+    game_dir: Path = DEFAULT_GAME_DIR  # a pasta "Limbus Company"
+    en_dir: Path | None = None  # se None, deriva de game_dir
+    lang_dir: Path | None = None  # se None, deriva de game_dir
     font_dir: Path | None = None  # se None, a etapa 1 procura sozinha
 
     # --- preenchidos pelas etapas ---
@@ -35,6 +36,10 @@ class Context:
     staging: Path | None = None
     converted: int = 0
     warnings: list[str] = field(default_factory=list)
+
+    def __post_init__(self):
+        self.en_dir = self.en_dir or en_dir_for(self.game_dir)
+        self.lang_dir = self.lang_dir or lang_dir_for(self.game_dir)
 
 
 Step = Callable[[Context], None]
